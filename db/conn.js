@@ -1,13 +1,20 @@
 const mongoose = require('mongoose');
-const DB_URI = process.env.DB_URI
 
-mongoose.set('strictQuery', false);
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+            dbName: 'taskmaster', // Explicitly specify the database name
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+	    serverSelectionTimeoutMS: 30000,		
+        });
+        console.log('MongoDB connected successfully.');
+    } catch (error) {
+        console.error('Error connecting to the database:', error.message);
+        console.error('Connection String:', process.env.MONGO_URI);
+        process.exit(1); // Exit the process on failure
+    }
+};
 
-mongoose.connect(`${DB_URI}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    console.log("Successfully connected to the database");
-}).catch(err => {
-    console.error("Error connecting to the database:", err);
-});
+module.exports = connectDB;
+

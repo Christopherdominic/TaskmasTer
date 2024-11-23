@@ -5,7 +5,7 @@ const expressSession = require('express-session')
 require('dotenv').config()
 
 // establishing port
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const app = express();
 
 // files of the database
